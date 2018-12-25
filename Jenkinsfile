@@ -56,8 +56,8 @@ node {
     
     stage('comment'){
         withEnv(['JIRA_SITE=anoop-jira']) {
-			jiraComment body: 'Build sucess', issueKey: 'TES-1'
-			jiraAssignIssue idOrKey: 'TES-1', userName: 'admin'
+			jiraComment body: 'Build sucess', issueKey: 'TES-2'
+			jiraAssignIssue idOrKey: 'TES-2', userName: 'admin'
 		}
     }
     
@@ -69,7 +69,7 @@ node {
             id: '41'			  
           ]
         ]
-        jiraTransitionIssue idOrKey: 'TES-1', input: transitionInput
+        jiraTransitionIssue idOrKey: 'TES-2', input: transitionInput
       }
     }
     currentBuild.result = 'FAILURE'
