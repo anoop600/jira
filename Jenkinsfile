@@ -30,7 +30,7 @@ node {
 	
 	stage('Artifactory upload') {
         def uploadSpec = """{
-			"files": [ { "pattern": "/var/lib/jenkins/workspace/DemoCapability/target/*.war", "target": "srini" } ] }""" 
+		"files": [ { "pattern": "/var/lib/jenkins/workspace/DemoCapability/target/*.war", "target": "srini" } ] }""" 
             server.upload(uploadSpec) 
        
         }
@@ -39,22 +39,15 @@ node {
 		def downloadSpec="""{ "files":[ { "pattern":"srini/z12345.war", "target":"/var/lib/jenkins/workspace/DemoCapability/" } ] }""" 
 		server.download(downloadSpec)
     }    
-        
-        
-         
-
-	}catch(err){
+}catch(err){
     mail bcc: '', body: 'Build Failed', cc: '', from: '', replyTo: '', subject: 'Build Failed', to: 'anoop.jain10@gmail.com'
     
 	stage('JIRA'){
 		withEnv(['JIRA_SITE=anoop-jira']) {
 			def testIssue = [fields: [ project: [key: 'TES'],
-									 summary: "Issue ${BUILD_NUMBER} ${env.JOB_NAME} ",
-									 description: 'BUG in CODE',
-					
-									 issuetype: ["name":"Bug"]]]
-
-		  
+			summary: "Issue ${BUILD_NUMBER} ${env.JOB_NAME} ",
+			description: 'BUG in CODE',
+			issuetype: ["name":"Bug"]]]
 			response = jiraNewIssue issue: testIssue
 			echo response.successful.toString()
 			echo response.data.toString()
@@ -63,8 +56,8 @@ node {
     
     stage('comment'){
         withEnv(['JIRA_SITE=anoop-jira']) {
-			jiraComment body: 'Build sucess', issueKey: 'TES-28'
-			jiraAssignIssue idOrKey: 'TES-28', userName: 'admin'
+			jiraComment body: 'Build sucess', issueKey: 'TES-1'
+			jiraAssignIssue idOrKey: 'TES-1', userName: 'admin'
 		}
     }
     
@@ -76,7 +69,7 @@ node {
             id: '41'			  
           ]
         ]
-        jiraTransitionIssue idOrKey: 'TES-25', input: transitionInput
+        jiraTransitionIssue idOrKey: 'TES-1', input: transitionInput
       }
     }
     currentBuild.result = 'FAILURE'
